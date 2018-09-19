@@ -1,0 +1,37 @@
+FROM ubuntu:18.04
+
+LABEL "author"="github.com/sofianinho"
+LABEL "system"="ubuntu 18.04"
+LABEL "version"="SIPp v3.5.2"
+LABEL "description"="SIPP with sctp, pcap and openssl support"
+
+ARG SIPP_VERSION=3.5.2
+
+COPY . /app
+
+WORKDIR /app
+
+RUN apt-get update && apt-get upgrade -y \
+  && apt-get install -y --no-install-recommends\
+    curl \
+    ca-certificates \
+    dh-autoreconf \
+    ncurses-dev \
+    pkg-config \
+    build-essential \
+    libssl-dev \
+    libpcap-dev \
+    libncurses5-dev \
+    libsctp-dev \
+    lksctp-tools
+
+RUN ./get_release.sh -v "v${SIPP_VERSION}" \
+  && mv sipp-${SIPP_VERSION} sipp \
+  && cd sipp \
+  && ./build.sh --with-sctp --with-pcap --with-openssl \
+  && cp sipp /usr/local/bin
+
+CMD ["sipp"]  
+
+
+
