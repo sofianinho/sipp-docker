@@ -15,8 +15,6 @@ If you rebuild the docker image on your machine, you should be able to change so
 The docker base image used will be either:
 
 - Ubuntu 18.04
-- Debian stretch
-- Alpine 3.8
 
 ## LICENSE
 
